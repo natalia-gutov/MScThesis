@@ -1,0 +1,6 @@
+# a list of required packages to run the python code
+# to install run ´pip install -r requirements.txt´
+pandas
+numpy
+matplotlib
+scipy
