@@ -3,12 +3,14 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
 
+file_path = os.path.dirname(os.path.abspath(__file__))
 # Read and convert to datetime the CSV generation files
 # df_P_100 = pd.read_csv("P_w_100.csv")
-df_P_100 = pd.read_csv("P_100.csv")
-df_P_150 = pd.read_csv("P_150.csv")
-df_P_PV = pd.read_csv("P_PV.csv")
+df_P_100 = pd.read_csv(os.path.join(file_path, "P_100.csv"))
+df_P_150 = pd.read_csv(os.path.join(file_path,"P_150.csv"))
+df_P_PV = pd.read_csv(os.path.join(file_path,"P_PV.csv"))
 
 df_P_100['time'] = pd.to_datetime(df_P_100['time'], utc=True)
 df_P_150['time'] = pd.to_datetime(df_P_150['time'], utc=True)
@@ -223,7 +225,7 @@ revenues_R1_2025 = {
 # for lifetime revenues
 disc_rate = 0.05
 lf_1 = np.array(range(0, 8))
-
+annual_rev_lf1 = {}
 rev_lf1_loc = {}
 
 for loc in CorRES_loc:
@@ -236,13 +238,14 @@ for loc in CorRES_loc:
             first_sec_lf_discounted = revenues_R1_2025['rev_100_' + loc + '_R1_2025'][0]
         
         first_sec_lf1[year] = first_sec_lf_discounted
-
+    annual_rev_lf1[loc] = first_sec_lf1
     rev_lf1 = np.sum(first_sec_lf1)
     rev_lf1_loc[loc] = rev_lf1
 
-# print(rev_lf1_loc)
+print(rev_lf1_loc)
 # ----------------------------------------
 lf_2 = np.array(range(8, 17))
+annual_rev_lf2 = {}
 rev_lf2_loc = {}
 
 for loc in CorRES_loc:
@@ -255,13 +258,14 @@ for loc in CorRES_loc:
             second_sec_lf_discounted = revenues_R1_2035['rev_100_' + loc + '_R1_2035'][0]
         
         second_sec_lf2[year - lf_2[0]] = second_sec_lf_discounted
-
+    annual_rev_lf2[loc] = second_sec_lf2
     rev_lf2 = np.sum(second_sec_lf2)
     rev_lf2_loc[loc] = rev_lf2
 
-# print(rev_lf2_loc)
+print(rev_lf2_loc)
 # ----------------------------------------
 lf_3 = np.array(range(17, 26))
+annual_rev_lf3 = {}
 rev_lf3_loc = {}
 
 for loc in CorRES_loc:
@@ -274,11 +278,11 @@ for loc in CorRES_loc:
             third_sec_lf_discounted = revenues_R1_2045['rev_100_' + loc + '_R1_2045'][0]
         
         third_sec_lf3[year - lf_3[0]] = third_sec_lf_discounted
-
+    annual_rev_lf3[loc] = third_sec_lf3
     rev_lf3 = np.sum(third_sec_lf3)
     rev_lf3_loc[loc] = rev_lf3
 
-# print(rev_lf3_loc)
+print(rev_lf3_loc)
 
 rev_lifetime_loc = {}
 
