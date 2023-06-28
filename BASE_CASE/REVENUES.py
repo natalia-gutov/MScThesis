@@ -122,24 +122,23 @@ CorRES_loc = ['1', '2', '3', '4_1', '5_1', '6', '7', '8_1', '9', '10']
 SP_loc = ['DE4-S', 'DE4-N', 'PL', 'FIN', 'NL', 'BE', 'DK2']
 R_sc = ['R1', 'R4', 'R19']
 year_sc = ['2025', '2035', '2045']
+file_path = os.path.dirname(os.path.abspath(__file__))
 
 # Definir las hojas de Excel y las columnas a extraer
 sheets_to_read = ['2025', '2035', '2045']
 
 columns_to_extract = ['Time (UTC)', 'BE', 'NL', 'FR', 'PL', 'FIN', 'DK2', 'DE4-S', 'DE4-N', 'DE4-W']
 
-# Nombre de los archivos de Excel
 file_names = ['R1.xlsx', 'R4.xlsx', 'R19.xlsx']
 
-# Diccionario para almacenar los DataFrames
 dataframes = {}
 
-# Leer los archivos de Excel y guardar los datos en DataFrames
 for file_name in file_names:
-    # Leer el archivo de Excel
-    df = pd.read_excel(file_name, sheet_name=None)
-    
+    file_full_path = os.path.join(file_path, file_name)
+    df = pd.read_excel(file_full_path, sheet_name=sheets_to_read, usecols=columns_to_extract)
+    # df = pd.read_excel(file_name, sheet_name=None)
     # Crear un diccionario para almacenar los DataFrames por hoja
+    dataframes[file_name] = df
     df_dict = {}
     
     # Leer las hojas de Excel y extraer las columnas necesarias
@@ -151,10 +150,14 @@ for file_name in file_names:
     dataframes[file_name] = df_dict
 
 # Acceder a los DataFrames según el archivo y la hoja
-for file_name, df_dict in dataframes.items():
-    for sheet_name, df_sheet in df_dict.items():
+# for file_name, df_dict in dataframes.items():
+#     for sheet_name, df_sheet in df_dict.items():
+#         df_name = f"df_{file_name.split('.')[0]}_{sheet_name}"
+#         globals()[df_name] = df_sheet  # Guardar el DataFrame en una variable con nombre dinámico
+for file_name, df in dataframes.items():
+    for sheet_name, df_sheet in df.items():
         df_name = f"df_{file_name.split('.')[0]}_{sheet_name}"
-        globals()[df_name] = df_sheet  # Guardar el DataFrame en una variable con nombre dinámico
+        globals()[df_name] = df_sheet  
 
 # Imprimir los nombres de los DataFrames creados
 print("DataFrames creados:")
