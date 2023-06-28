@@ -86,19 +86,19 @@ plt.show()
 # # FOLLOWING THE RELATIONSHIPS THE OPEX FOUND FOR EACH TECHNOLOGY IS:
 # SOLAR
 dolltoeur= 0.92 
-opex_pv_low= 14205*dolltoeur # EUR/MW-year
-opex_pv_high= 17355*dolltoeur # EUR/MW-year
-opex_pv_mod= 15072*dolltoeur 
+opex_pv_low= 14205*dolltoeur*cap_inst # EUR/MW-year
+opex_pv_high= 17355*dolltoeur*cap_inst # EUR/MW-year
+opex_pv_mod= 15072*dolltoeur*cap_inst 
 
 # ----------------
 # WIND
-opex_on_high=43000*dolltoeur
-opex_on_low= 38298*dolltoeur
-opex_on_mod=40791*dolltoeur
+opex_on_high=43000*dolltoeur*cap_inst
+opex_on_low= 38298*dolltoeur*cap_inst
+opex_on_mod=40791*dolltoeur*cap_inst
 
-opex_off_high= 109405*dolltoeur
-opex_off_low= 87437*dolltoeur
-opex_off_mod= 94648*dolltoeur
+opex_off_high= 109405*dolltoeur*cap_inst
+opex_off_low= 87437*dolltoeur*cap_inst
+opex_off_mod= 94648*dolltoeur*cap_inst
 #  VISUALIZATION
 
 x_values = ['opex_off_high', 'opex_off_low', 'opex_off_mod',
