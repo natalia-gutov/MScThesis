@@ -116,6 +116,60 @@ P_PV_5_2_data = pd.DataFrame({'time': df_P_PV_year['time'][24:-24], 'LOC_5_2': l
 P_PV_6_data = pd.DataFrame({'time': df_P_PV_year['time'][24:-24], 'LOC_6': loc_data_series_PV['LOC_6'][24:-24]* cap_inst})
 P_PV_7_data = pd.DataFrame({'time': df_P_PV_year['time'][24:-24], 'LOC_7': loc_data_series_PV['LOC_7'][24:-24]* cap_inst})
 P_PV_8_2_data = pd.DataFrame({'time': df_P_PV_year['time'][24:-24], 'LOC_8_2': loc_data_series_PV['LOC_8.2'][24:-24]* cap_inst})
+P_PV_9_data = pd.DataFrame({'time': df_P_PV_year['time'][24:-24], 'LOC_9': loc_data_series_PV['LOC_9'][24:-24]* cap_inst})
+P_PV_10_data = pd.DataFrame({'time': df_P_PV_year['time'][24:-24], 'LOC_10': loc_data_series_PV['LOC_10'][24:-24]* cap_inst})
+# ANNUAL GENERATION
+
+# locs_w = ['LOC_1', 'LOC_2', 'LOC_3', 'LOC_4.1', 'LOC_5.1', 'LOC_6', 'LOC_7', 'LOC_8.1', 'LOC_9', 'LOC_10']
+AEP_100values = []
+
+for loc in locs_w:
+    loc_name = loc.replace('.', '_')
+    AEP = np.sum((loc_data_series_100[loc][24:-24].to_numpy()) * cap_inst)
+    AEP_100values.append(AEP)
+    exec(f"Loc_{loc_name}_AEP100 = AEP")
+
+plt.bar(locs_w, AEP_100values)
+plt.xlabel('Location of wind farms')
+plt.ylabel('AEP HH100(MWh/year)')
+plt.title('Annual Energy Production (AEP) for Each Location')
+plt.axhline(8736*50, color='r', linestyle='--', label='Max Power Output (MWh/year)')
+plt.legend()
+plt.show()
+
+AEP_150values = []
+
+for loc in locs_w:
+    loc_name = loc.replace('.', '_')
+    AEP = np.sum((loc_data_series_150[loc][24:-24].to_numpy()) * cap_inst)
+    AEP_150values.append(AEP)
+    exec(f"Loc_{loc_name}_AEP150 = AEP")
+
+plt.bar(locs_w, AEP_150values)
+plt.xlabel('Location of wind farms')
+plt.ylabel('AEP HH150(MWh/year)')
+plt.title('Annual Energy Production (AEP) for Each Location')
+plt.axhline(8736*50, color='r', linestyle='--', label='Max Power Output (MWh/year)')
+plt.legend()
+plt.show()
+
+AEP_PVvalues = []
+
+for loc in locs_s:
+    loc_name = loc.replace('.', '_')
+    AEP = np.sum((loc_data_series_PV[loc][24:-24].to_numpy()) * cap_inst)
+    AEP_PVvalues.append(AEP)
+    exec(f"Loc_{loc_name}_AEPPV = AEP")
+
+plt.bar(locs_s, AEP_PVvalues)
+plt.xlabel('Location of solar farms')
+plt.ylabel('AEP (MWh/year)')
+plt.title('Annual Energy Production (AEP) for Each Location')
+plt.axhline(8736*50, color='r', linestyle='--', label='Max Power Output (MWh/year)')
+plt.legend()
+plt.show()
+
+
 #  in case:
 tech = ['100', '150']
 CorRES_loc = ['1', '2', '3', '4_1', '5_1', '6', '7', '8_1', '9', '10']
@@ -166,21 +220,21 @@ for file_name in file_names:
         df_name = f"df_{file_name.split('.')[0]}_{sheet_name}"
         df = globals()[df_name]  # Obtener el DataFrame
         
-        # plt.plot(df['Time (UTC)'], df['BE'], label='BE')
-        # plt.plot(df['Time (UTC)'], df['NL'], label='NL')
-        # plt.plot(df['Time (UTC)'], df['FR'], label='FR')
-        # plt.plot(df['Time (UTC)'], df['PL'], label='PL')
-        # plt.plot(df['Time (UTC)'], df['FIN'], label='FIN')
-        # plt.plot(df['Time (UTC)'], df['DK2'], label='DK2')
-        # plt.plot(df['Time (UTC)'], df['DE4-S'], label='DE4-S')
-        # plt.plot(df['Time (UTC)'], df['DE4-N'], label='DE4-N')
-        # plt.plot(df['Time (UTC)'], df['DE4-W'], label='DE4-W')
+        plt.plot(df['Time (UTC)'], df['BE'], label='BE')
+        plt.plot(df['Time (UTC)'], df['NL'], label='NL')
+        plt.plot(df['Time (UTC)'], df['FR'], label='FR')
+        plt.plot(df['Time (UTC)'], df['PL'], label='PL')
+        plt.plot(df['Time (UTC)'], df['FIN'], label='FIN')
+        plt.plot(df['Time (UTC)'], df['DK2'], label='DK2')
+        plt.plot(df['Time (UTC)'], df['DE4-S'], label='DE4-S')
+        plt.plot(df['Time (UTC)'], df['DE4-N'], label='DE4-N')
+        plt.plot(df['Time (UTC)'], df['DE4-W'], label='DE4-W')
         
-        # plt.xlabel('Time (UTC)')
-        # plt.ylabel('Eur/Mwh')
-        # plt.title(f'Spot Prices for {df_name}')
-        # plt.legend()
-        # plt.show()
+        plt.xlabel('Time (UTC)')
+        plt.ylabel('Eur/Mwh')
+        plt.title(f'Spot Prices for {df_name}')
+        plt.legend()
+        plt.show()
         
         
 #  FOR TECH 100: annual revenues
@@ -227,12 +281,12 @@ revenues_R1_2025 = {
 
 # for lifetime revenues
 disc_rate = 0.05
-lf_1 = np.array(range(0, 8))
+lf_1 = np.array(range(0, 6))
 annual_rev_lf1 = {}
 rev_lf1_loc = {}
 
 for loc in CorRES_loc:
-    first_sec_lf1 = np.zeros(8)
+    first_sec_lf1 = np.zeros(6)
     
     for year in lf_1:
         if year < len(lf_1):
@@ -247,12 +301,12 @@ for loc in CorRES_loc:
 
 print(rev_lf1_loc)
 # ----------------------------------------
-lf_2 = np.array(range(8, 17))
+lf_2 = np.array(range(6, 17))
 annual_rev_lf2 = {}
 rev_lf2_loc = {}
 
 for loc in CorRES_loc:
-    second_sec_lf2 = np.zeros(9)
+    second_sec_lf2 = np.zeros(11)
     
     for year in lf_2:
         if year < len(lf_2):
@@ -267,12 +321,12 @@ for loc in CorRES_loc:
 
 print(rev_lf2_loc)
 # ----------------------------------------
-lf_3 = np.array(range(17, 26))
+lf_3 = np.array(range(17, 25))
 annual_rev_lf3 = {}
 rev_lf3_loc = {}
 
 for loc in CorRES_loc:
-    third_sec_lf3 = np.zeros(9)
+    third_sec_lf3 = np.zeros(8)
     
     for year in lf_3:
         if year < len(lf_3):
@@ -291,7 +345,7 @@ rev_lifetime_loc = {}
 
 for loc in CorRES_loc:
     rev_lifetime_loc[loc] = rev_lf1_loc[loc] + rev_lf2_loc[loc] + rev_lf3_loc[loc]
-# print(rev_lifetime_loc)
+print(rev_lifetime_loc)
 print('IT WORKS')    
  
  
