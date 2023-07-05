@@ -119,3 +119,4 @@ plt.title('OPEX for 50 MW wind farm')
 plt.xticks(rotation=90)
 plt.show()
 
+print(opex_on_mod)
